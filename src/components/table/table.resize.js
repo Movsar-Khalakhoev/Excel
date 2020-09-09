@@ -1,4 +1,4 @@
-import {$} from '../../core/dom'
+import {$} from '@core/dom'
 
 function resizerFunc($resizer,
 										$table,
@@ -42,33 +42,31 @@ function mousemoveFunc($resizer, $table, context, coords, type) {
 }
 
 export function mousedownFunc($root, event) {
-	const $resizer = $
+	const $resizer = $(event.target)
 	const $parent = $resizer.closest('[data-type="resizable"]')
 	const $type = $resizer.data.resize
-	if ($type) {
-		const $body = $('body')
-		const coords = $parent.getCoords()
-		let value
+	const $body = $('body')
+	const coords = $parent.getCoords()
+	let value
 
-		$body.css({cursor: `${$type == 'col' ? 'col-resize': 'row-resize'}`})
+	$body.css({cursor: `${$type == 'col' ? 'col-resize': 'row-resize'}`})
 
-		resizerFunc($resizer, $root.$el, $type)
+	resizerFunc($resizer, $root.$el, $type)
 
-		document.onmousemove = e => {
-			value = mousemoveFunc($resizer, $root.$el, e, coords, $type)
-		}
+	document.onmousemove = e => {
+		value = mousemoveFunc($resizer, $root.$el, e, coords, $type)
+	}
 
-		document.onmouseup = e => {
-			document.onmousemove = null
-			document.onmouseup = null
-			$type == 'col' ?
-				$root
-				.findAll(`[data-col="${$parent.data.col}"]`)
-				.forEach(el => el.style.width = `${value}px`) :
-			$parent.css({height: `${value}px`})
+	document.onmouseup = e => {
+		document.onmousemove = null
+		document.onmouseup = null
+		$type == 'col' ?
+			$root
+			.findAll(`[data-col="${$parent.data.col}"]`)
+			.forEach(el => el.style.width = `${value}px`) :
+		$parent.css({height: `${value}px`})
 
-			$resizer.css()
-			$body.css()
-		}
+		$resizer.css()
+		$body.css()
 	}
 }
