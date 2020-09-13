@@ -7,17 +7,19 @@
 	position: relative
 	display: inline-block
 	color: rgba(0, 0, 0, .7)
+	margin-right: 2px
 
 	& span
 		font-size: 18px
 
 	&:active, &.active
 		color: $color
+		background-color: #eee
 
 	&:hover
 		background-color: #eee
 		cursor: pointer
-		
+
 @mixin clear-list()
 	list-style: none
 	margin: 0
